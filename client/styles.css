@@ -1,0 +1,61 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.canvas-wrapper {
+    position: relative;
+}
+
+#canvas {
+    outline: 1px solid #000;
+}
+
+#canvas-overlay {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+}
+
+.palette {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    top: 2vh;
+    left: 0;
+    z-index: 2;
+}
+
+.palette label {
+    cursor: pointer;
+}
+
+.palette input {
+    display: none
+}
+
+.color {
+    flex-shrink: 0;
+    outline: 1px solid #000;
+    outline-offset: 0px;
+    width: 30px;
+    height: 30px;
+    transition: 0.2s all ease-in-out;
+}
+
+.color:has(input:checked) {
+    margin: 0 15px;
+    width: 120px;
+}

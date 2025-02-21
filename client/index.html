@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelBattle</title>
+    <link href="./styles.css" rel="stylesheet">
+</head>
+<body>
+    <div id="content">
+        <div class="palette" id="palette">
+            <template id="palette-color-template">
+                <label class="color">
+                    <input type="radio" name="color" />
+                </label>
+            </template>
+        </div>
+        <div class="canvas-wrapper" id="canvas-wrapper">
+            <canvas id="canvas"></canvas>
+            <canvas id="canvas-overlay"></canvas>
+        </div>
+    </div>
+    <script type="module" src="./scripts/index.js"></script>
+</body>
+</html>
