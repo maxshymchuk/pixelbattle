@@ -1,5 +1,7 @@
 import { preventDefault } from '../utils.js';
 
+const MOVING_MOUSE_BUTTONS = [1, 2];
+
 class InteractivityController {
   #element = null;
 
@@ -17,7 +19,7 @@ class InteractivityController {
   };
 
   #mouseDownListener = (e) => {
-    if (e.button !== 2) return;
+    if (!MOVING_MOUSE_BUTTONS.includes(e.button)) return;
     const x = e.clientX;
     const y = e.clientY;
     this.#startPos = { x, y };
@@ -47,7 +49,7 @@ class InteractivityController {
   };
 
   #mouseUpListener = (e) => {
-    if (e.button !== 2) return;
+    if (!MOVING_MOUSE_BUTTONS.includes(e.button)) return;
     this.#isMoving = false;
     this.#pos = {
       x: this.#pos.x + this.#delta.x,
