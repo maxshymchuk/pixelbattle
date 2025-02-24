@@ -2,7 +2,7 @@ import { Canvas } from './classes/Canvas.js';
 import { config } from './config.js';
 import { Palette } from './classes/Palette.js';
 import { io } from './socket.io.js';
-import { between, clear } from './utils.js';
+import { between, clearContext } from './utils.js';
 
 const socket = io('http://127.0.0.1:8888', {
   withCredentials: true,
@@ -24,7 +24,7 @@ const canvasState = new Canvas(
 canvasState.interact.onWheel((scale) => canvasState.rescale(scale));
 
 canvasState.interact.onMouseMove(() => {
-  clear(canvasState.overlay.ctx);
+  clearContext(canvasState.overlay.ctx);
   const { x, y } = canvasState.interact.cursor;
   const { width, height } = canvasState.canvas.element;
   if (between(x, 0, width) && between(y, 0, height)) {

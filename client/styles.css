@@ -1,3 +1,11 @@
+:root {
+    --palette-color-size: 30px;
+
+    --palette-z-index: 3;
+    --canvas-z-index: 2;
+    --overlay-z-index: 1;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -14,18 +22,20 @@ body {
     align-items: center;
 }
 
-.canvas-wrapper {
+.canvas-wrapper, .canvas-wrapper > div {
     position: relative;
 }
 
 #canvas {
     outline: 1px solid #000;
+    z-index: var(--canvas-z-index);
 }
 
 #canvas-overlay {
     pointer-events: none;
     position: absolute;
     left: 0;
+    z-index: var(--overlay-z-index);
 }
 
 .palette {
@@ -33,9 +43,9 @@ body {
     justify-content: center;
     position: fixed;
     width: 100%;
-    top: 2vh;
+    top: calc(var(--palette-color-size) / 2);
     left: 0;
-    z-index: 2;
+    z-index: var(--palette-z-index);
 }
 
 .palette label {
@@ -49,13 +59,13 @@ body {
 .color {
     flex-shrink: 0;
     outline: 1px solid #000;
-    outline-offset: 0px;
-    width: 30px;
-    height: 30px;
+    outline-offset: 0;
+    width: var(--palette-color-size);
+    height: var(--palette-color-size);
     transition: 0.2s all ease-in-out;
 }
 
 .color:has(input:checked) {
-    margin: 0 15px;
-    width: 120px;
+    margin: 0 calc(var(--palette-color-size) / 2);
+    width: calc(var(--palette-color-size) * 5);
 }
