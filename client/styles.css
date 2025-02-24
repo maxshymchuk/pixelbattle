@@ -1,9 +1,12 @@
 :root {
     --palette-color-size: 30px;
 
-    --palette-z-index: 3;
-    --canvas-z-index: 2;
-    --overlay-z-index: 1;
+    --sidemenu-z-index: 2;
+    --content-z-index: 1;
+
+    --content-palette-z-index: 3;
+    --content-canvas-z-index: 2;
+    --content-overlay-z-index: 1;
 }
 
 * {
@@ -18,8 +21,45 @@ html, body {
 
 body {
     display: flex;
+}
+
+body > * {
+    position: relative;
+}
+
+.sidemenu {
+    width: 50px;
+    height: 100%;
+    background-color: #fff;
+    z-index: var(--sidemenu-z-index);
+    border-right: 1px solid #000;
+}
+
+.sidemenu ul {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.sidemenu ul button {
+    transform: rotate(-90deg);
+    margin: 50% 0;
+}
+
+.sidemenu ul li:last-child {
+    margin-top: auto;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
+    z-index: var(--content-z-index);
 }
 
 .canvas-wrapper, .canvas-wrapper > div {
@@ -28,14 +68,14 @@ body {
 
 #canvas {
     outline: 1px solid #000;
-    z-index: var(--canvas-z-index);
+    z-index: var(--content-canvas-z-index);
 }
 
 #canvas-overlay {
     pointer-events: none;
     position: absolute;
     left: 0;
-    z-index: var(--overlay-z-index);
+    z-index: var(--content-overlay-z-index);
 }
 
 .palette {
@@ -45,7 +85,7 @@ body {
     width: 100%;
     top: calc(var(--palette-color-size) / 2);
     left: 0;
-    z-index: var(--palette-z-index);
+    z-index: var(--content-palette-z-index);
 }
 
 .palette label {
@@ -68,4 +108,36 @@ body {
 .color:has(input:checked) {
     margin: 0 calc(var(--palette-color-size) / 2);
     width: calc(var(--palette-color-size) * 5);
+}
+
+#debug-panel {
+    display: none;
+    min-width: 350px;
+    position: absolute;
+    bottom: 0;
+    left: 100%;
+    background-color: inherit;
+    border: 1px solid #000;
+    border-bottom: none;
+    padding: 10px;
+    z-index: calc(var(--content-palette-z-index) + 1);
+}
+
+#debug-panel h4 {
+    margin: 0 0 10px 0;
+}
+
+#debug-panel div {
+    display: flex;
+    justify-content: space-between;
+}
+
+#debug-panel input {
+    width: 80px;
+    margin-left: 10px
+}
+
+#debug-panel button {
+    float: right;
+    margin: 10px 5px 0 5px;
 }

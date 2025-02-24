@@ -1,10 +1,9 @@
 const config = {
   canvas: {
-    options: {
-      width: 150,
-      height: 150 / 1.5,
-      pixelSize: 8,
-    },
+    width: 150,
+    height: 150 / 1.5,
+    pixelSize: 8,
+    exportPixelSize: 10,
   },
   palette: {
     colors: [
@@ -25,7 +24,7 @@ const config = {
       '#31A2F2',
       '#B2DCEF',
     ],
-    default: '#000000',
+    defaultColor: '#000000',
   },
 };
 

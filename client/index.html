@@ -7,7 +7,47 @@
     <link href="./styles.css" rel="stylesheet">
 </head>
 <body>
-    <div id="content">
+    <div class="sidemenu">
+        <ul>
+            <li><button id="sidemenu-export">Export</button></li>
+            <li><button id="sidemenu-debug">Debug</button></li>
+        </ul>
+        <div id="debug-panel">
+            <h4>Debug</h4>
+            <form id="debug-form">
+                <fieldset>
+                    <legend>Canvas</legend>
+                    <div>
+                        <label>Local pixel size (lpx), px</label>
+                        <input name="pixelSize" type="number">
+                    </div>
+                    <div>
+                        <label>Width, lpx</label>
+                        <input name="width" type="number">
+                    </div>
+                    <div>
+                        <label>Height, lpx</label>
+                        <input name="height" type="number">
+                    </div>
+                    <div>
+                        <label>Export pixel size, px</label>
+                        <input name="exportPixelSize" type="number">
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Palette</legend>
+                    <div>
+                        <label>Default color</label>
+                        <input name="defaultColor">
+                    </div>
+                </fieldset>
+                <button type="submit">Recreate</button>
+                <button id="debug-clear">Clear</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="content">
         <div class="palette" id="palette">
             <template id="palette-color-template">
                 <label class="color">
@@ -20,6 +60,7 @@
             <canvas id="canvas-overlay"></canvas>
         </div>
     </div>
+
     <script type="module" src="./scripts/index.js"></script>
 </body>
 </html>

@@ -2,12 +2,8 @@ import { CanvasInstance } from './CanvasInstance.js';
 import { InteractivityController } from './InteractivityController.js';
 
 class Canvas {
-  #canvasElement = null;
-  #overlayElement = null;
-  #interact = null;
-
-  #canvas = null;
-  #overlay = null;
+  #element = null;
+  #instance = null;
 
   #state = {};
   #maxPixelSize = 40;
@@ -17,41 +13,30 @@ class Canvas {
   #lWidth = 0;
   #lHeight = 0;
 
-  constructor(canvasElement, overlayElement, options) {
-    if (!canvasElement) throw 'No entry point for canvas';
-    if (!overlayElement) throw 'No entry point for overlay';
-    this.#canvasElement = canvasElement;
-    this.#overlayElement = overlayElement;
+  constructor(options) {
     if (options?.width) this.#lWidth = options.width;
     if (options?.height) this.#lHeight = options.height;
     if (options?.pixelSize) this.#pixelSize = options.pixelSize;
     if (options?.scale) this.#scale = options.scale;
-    this.#canvas = new CanvasInstance(
-      this.#canvasElement,
+  }
+
+  get instance() {
+    return this.#instance;
+  }
+
+  get state() {
+    return this.#state;
+  }
+
+  render(element) {
+    if (!element) throw 'No entry point for canvas';
+    this.#element = element;
+    this.#instance = new CanvasInstance(
+      this.#element,
       this.#lWidth * this.#pixelSize,
       this.#lHeight * this.#pixelSize
-    );
-    this.#overlay = new CanvasInstance(
-      this.#overlayElement,
-      this.#lWidth * this.#pixelSize,
-      this.#lHeight * this.#pixelSize
-    );
-    this.#interact = new InteractivityController(
-      this.#canvasElement.parentNode
     );
     this.rescale(this.#scale);
-  }
-
-  get canvas() {
-    return this.#canvas;
-  }
-
-  get overlay() {
-    return this.#overlay;
-  }
-
-  get interact() {
-    return this.#interact;
   }
 
   get(gCoord) {
@@ -60,7 +45,7 @@ class Canvas {
 
   set(gCoord, params) {
     this.#state[`${gCoord.x},${gCoord.y}`] = params;
-    this.draw(this.#canvas, gCoord, params);
+    this.draw(gCoord, params);
   }
 
   update(state) {
@@ -68,14 +53,24 @@ class Canvas {
     this.#redraw();
   }
 
+  resize({ pixelSize, width, height }, withLockedRatio = true) {
+    if (pixelSize) this.#pixelSize = pixelSize;
+    if (width) this.#instance.setWidth(width, withLockedRatio);
+    if (height) this.#instance.setHeight(height, withLockedRatio);
+  }
+
   rescale(scale = 1) {
     this.#pixelSize = Math.min(
       Math.max(1, this.#pixelSize * scale),
       this.#maxPixelSize
     );
-    this.#canvas.setWidth(this.#lWidth * this.#pixelSize);
-    this.#overlay.setWidth(this.#canvas.element.width);
+    this.#instance.setWidth(this.#lWidth * this.#pixelSize);
     this.#redraw();
+    return {
+      pixelSize: this.#pixelSize,
+      width: this.#instance.element.width,
+      height: this.#instance.element.height,
+    };
   }
 
   localToGrid(lCoord) {
@@ -91,8 +86,8 @@ class Canvas {
     return { x: gCoord.x * this.#pixelSize, y: gCoord.y * this.#pixelSize };
   }
 
-  draw(instance, gCoord, params) {
-    instance.draw(
+  draw(gCoord, params) {
+    this.#instance.draw(
       this.gridToLocal(gCoord),
       this.#pixelSize,
       this.#pixelSize,
@@ -108,7 +103,7 @@ class Canvas {
     });
     gCoords.forEach((gCoord) => {
       const params = this.get(gCoord);
-      this.draw(this.#canvas, gCoord, params);
+      this.draw(gCoord, params);
     });
   }
 }
