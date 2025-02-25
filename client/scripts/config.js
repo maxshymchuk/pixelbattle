@@ -1,4 +1,4 @@
-import { localStorageKey } from './constants.js';
+import { localStorageKeys } from './constants.js';
 
 const defaultConfig = {
   zoomScale: 1.3,
@@ -33,7 +33,7 @@ const defaultConfig = {
 
 const config = {
   ...defaultConfig,
-  ...JSON.parse(localStorage.getItem(localStorageKey) ?? '{}'),
+  ...JSON.parse(localStorage.getItem(localStorageKeys.config) ?? '{}'),
 };
 
 export { config };

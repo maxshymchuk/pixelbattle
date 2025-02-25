@@ -12,6 +12,21 @@ class InteractivityController {
   #pos = { x: 0, y: 0 };
   #delta = { x: 0, y: 0 };
 
+  get pos() {
+    return this.#pos;
+  }
+
+  set pos({ x, y }) {
+    this.#pos = { x, y };
+  }
+
+  commit() {
+    this.#element.style.transform = `translate(
+      ${this.#pos.x + this.#delta.x}px,
+      ${this.#pos.y + this.#delta.y}px
+    )`;
+  }
+
   #wheelCallback = null;
   #wheelListener = (e) => {
     preventDefault(e);
@@ -42,10 +57,7 @@ class InteractivityController {
       x: e.clientX - this.#startPos.x,
       y: e.clientY - this.#startPos.y,
     };
-    this.#element.style.transform = `translate(
-        ${this.#pos.x + this.#delta.x}px,
-        ${this.#pos.y + this.#delta.y}px
-    )`;
+    this.commit();
   };
 
   #mouseUpListener = (e) => {
@@ -55,6 +67,7 @@ class InteractivityController {
       x: this.#pos.x + this.#delta.x,
       y: this.#pos.y + this.#delta.y,
     };
+    this.#delta = { x: 0, y: 0 };
   };
 
   #mouseClickCallback = null;

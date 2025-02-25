@@ -1,11 +1,13 @@
 class Palette {
   #element = null;
   #currentColor;
+  #colors;
 
   constructor(element, template, colors, initial) {
     if (!element) throw 'No entry point for palette';
     if (!template) throw 'No template for palette color';
     this.#element = element;
+    this.#colors = colors;
     const nodes = [];
     if (initial) this.#currentColor = initial;
     colors.forEach((color) => {
@@ -29,6 +31,10 @@ class Palette {
 
   get currentColor() {
     return this.#currentColor;
+  }
+
+  get colors() {
+    return this.#colors;
   }
 }
 

@@ -2,9 +2,15 @@ import { Canvas } from './classes/Canvas.js';
 import { config } from './config.js';
 import { Palette } from './classes/Palette.js';
 import { io } from './socket.io.js';
-import { between, clearContext, preventDefault } from './utils.js';
+import {
+  between,
+  clearContext,
+  random,
+  randomHex,
+  stopPropagation,
+} from './utils.js';
 import { InteractivityController } from './classes/InteractivityController.js';
-import { localStorageKey } from './constants.js';
+import { localStorageKeys } from './constants.js';
 
 const socket = io('http://127.0.0.1:8888', {
   withCredentials: true,
@@ -17,7 +23,11 @@ const palette = new Palette(
   config.palette.defaultColor
 );
 
-const canvas = new Canvas(config.canvas);
+const initialState = JSON.parse(
+  localStorage.getItem(localStorageKeys.state) ?? '{}'
+);
+
+const canvas = new Canvas(config.canvas, initialState);
 const overlay = new Canvas(config.canvas);
 const interactivity = new InteractivityController(
   document.getElementById('canvas-wrapper')
@@ -72,6 +82,31 @@ for (const form in configForms) {
   }
 }
 
+function createState(fromPalette) {
+  const state = {};
+  for (let i = 0; i < canvas.width; i++) {
+    for (let j = 0; j < canvas.height; j++) {
+      state[`${i},${j}`] = {
+        fill: fromPalette
+          ? palette.colors[random(0, palette.colors.length - 1)]
+          : `#${randomHex()}`,
+      };
+    }
+  }
+  return state;
+}
+
+debugForm.elements['manipulation'].addEventListener('click', (e) => {
+  switch (e.target.name) {
+    case 'fill-palette':
+      canvas.update(createState(true));
+      return;
+    case 'fill-random':
+      canvas.update(createState(false));
+      return;
+  }
+});
+
 function reducer(configKey) {
   return {
     [configKey]: configForms[configKey].reduce((res, key) => {
@@ -87,7 +122,7 @@ function reducer(configKey) {
 
 debugForm.addEventListener('submit', (e) => {
   localStorage.setItem(
-    localStorageKey,
+    localStorageKeys.config,
     JSON.stringify({
       ...config,
       ...reducer('canvas'),
@@ -96,8 +131,7 @@ debugForm.addEventListener('submit', (e) => {
   );
 });
 
-const exportButton = document.getElementById('sidemenu-export');
-exportButton.addEventListener('click', (e) => {
+document.getElementById('sidemenu-export').addEventListener('click', (e) => {
   e.stopPropagation();
   const canvasElement = document.createElement('canvas');
   const canvasExport = new Canvas({ ...config.canvas, pixelSize: 10 });
@@ -113,17 +147,21 @@ exportButton.addEventListener('click', (e) => {
   });
 });
 
+document.getElementById('sidemenu-clear').addEventListener('click', (e) => {
+  stopPropagation(e);
+  clearContext(canvas.instance.ctx);
+  canvas.update({});
+});
+
+document.getElementById('sidemenu-center').addEventListener('click', (e) => {
+  stopPropagation(e);
+  interactivity.pos = { x: 0, y: 0 };
+  interactivity.commit();
+});
+
 const debugButton = document.getElementById('sidemenu-debug');
 debugButton.addEventListener('click', (e) => {
   e.stopPropagation();
   const flag = debugPanel.style.display === 'block';
   debugPanel.style.display = flag ? 'none' : 'block';
-});
-
-const debugClear = document.getElementById('debug-clear');
-debugClear.addEventListener('click', (e) => {
-  preventDefault(e);
-  stopPropagation(e);
-  clearContext(canvas.instance.ctx);
-  canvas.update({});
 });

@@ -28,14 +28,16 @@ body > * {
 }
 
 .sidemenu {
-    width: 50px;
+    width: 80px;
     height: 100%;
     background-color: #fff;
     z-index: var(--sidemenu-z-index);
     border-right: 1px solid #000;
+    padding: 10px
 }
 
 .sidemenu ul {
+    width: 100%;
     display: flex;
     flex-direction: column;
     list-style-type: none;
@@ -44,9 +46,13 @@ body > * {
     height: 100%;
 }
 
-.sidemenu ul button {
-    transform: rotate(-90deg);
-    margin: 50% 0;
+.sidemenu ul li {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.sidemenu ul li button {
+    width: 100%;
 }
 
 .sidemenu ul li:last-child {
@@ -77,9 +83,6 @@ body > * {
 .canvas-wrapper {
     font-size: 0;
     box-shadow: 0 0 10px 0 #000;
-}
-
-.canvas-wrapper, .canvas-wrapper > div {
     position: relative;
 }
 
@@ -149,7 +152,7 @@ body > * {
     justify-content: space-between;
 }
 
-#debug-panel input {
+#debug-panel div input {
     width: 80px;
     margin-left: 10px
 }

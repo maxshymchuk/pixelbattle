@@ -10,13 +10,15 @@
     <div class="sidemenu">
         <ul>
             <li><button id="sidemenu-export">Export</button></li>
+            <li><button id="sidemenu-clear">Clear</button></li>
+            <li><button id="sidemenu-center">Center</button></li>
             <li><button id="sidemenu-debug">Debug</button></li>
         </ul>
         <div id="debug-panel">
             <h4>Debug</h4>
             <form id="debug-form">
                 <fieldset>
-                    <legend>Canvas</legend>
+                    <legend>Canvas configuration</legend>
                     <div>
                         <label>Local pixel size (lpx), px</label>
                         <input name="pixelSize" type="number">
@@ -41,8 +43,12 @@
                         <input name="defaultColor">
                     </div>
                 </fieldset>
+                <fieldset name="manipulation">
+                    <legend>Manipulation</legend>
+                    <input type="button" value="Random fill (palette)" name="fill-palette">
+                    <input type="button" value="Random fill" name="fill-random">
+                </fieldset>
                 <button type="submit">Recreate</button>
-                <button id="debug-clear">Clear</button>
             </form>
         </div>
     </div>

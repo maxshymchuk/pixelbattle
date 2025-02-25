@@ -1,3 +1,6 @@
-const localStorageKey = 'pixelbattle-canvas';
+const localStorageKeys = {
+  config: 'pixelbattle-canvas-config',
+  state: 'pixelbattle-canvas-state',
+};
 
-export { localStorageKey };
+export { localStorageKeys };

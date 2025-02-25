@@ -1,3 +1,4 @@
+import { localStorageKeys } from '../constants.js';
 import { CanvasInstance } from './CanvasInstance.js';
 
 class Canvas {
@@ -12,11 +13,20 @@ class Canvas {
   #lWidth = 0;
   #lHeight = 0;
 
-  constructor(options) {
+  constructor(options, initialState = {}) {
     if (options?.width) this.#lWidth = options.width;
     if (options?.height) this.#lHeight = options.height;
     if (options?.pixelSize) this.#pixelSize = options.pixelSize;
     if (options?.scale) this.#scale = options.scale;
+    this.#state = initialState;
+  }
+
+  get width() {
+    return this.#lWidth;
+  }
+
+  get height() {
+    return this.#lHeight;
   }
 
   get instance() {
@@ -25,6 +35,14 @@ class Canvas {
 
   get state() {
     return this.#state;
+  }
+
+  #saveToLocalStorage() {
+    try {
+      localStorage.setItem(localStorageKeys.state, JSON.stringify(this.#state));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   render(element) {
@@ -45,11 +63,13 @@ class Canvas {
   set(gCoord, params) {
     this.#state[`${gCoord.x},${gCoord.y}`] = params;
     this.draw(gCoord, params);
+    this.#saveToLocalStorage();
   }
 
   update(state) {
     this.#state = state;
     this.#redraw();
+    this.#saveToLocalStorage();
   }
 
   resize({ pixelSize, width, height }, withLockedRatio = true) {
