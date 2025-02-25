@@ -54,12 +54,29 @@ body > * {
 }
 
 .content {
+    --pattern-size: min(4vh, 4vw);
+    --pattern-shift: calc(var(--pattern-size) / 2);
+    --light-cell-color: #efefef;
+    --dark-cell-color: #e0e0e0;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: var(--content-z-index);
+    background-color: var(--light-cell-color);
+    background-size: var(--pattern-size) var(--pattern-size);
+    background-position: 0 0, 0 var(--pattern-shift), var(--pattern-shift) calc(-1 * var(--pattern-shift)), calc(-1 * var(--pattern-shift)) 0;
+    background-image: 
+        linear-gradient(45deg, var(--dark-cell-color) 25%, transparent 25%), 
+        linear-gradient(-45deg, var(--dark-cell-color) 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, var(--dark-cell-color) 75%), 
+        linear-gradient(-45deg, transparent 75%, var(--dark-cell-color) 75%);
+}
+
+.canvas-wrapper {
+    font-size: 0;
+    box-shadow: 0 0 10px 0 #000;
 }
 
 .canvas-wrapper, .canvas-wrapper > div {
