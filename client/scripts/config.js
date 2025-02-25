@@ -1,4 +1,7 @@
-const config = {
+import { localStorageKey } from './constants.js';
+
+const defaultConfig = {
+  zoomScale: 1.3,
   canvas: {
     width: 150,
     height: 150 / 1.5,
@@ -26,6 +29,11 @@ const config = {
     ],
     defaultColor: '#000000',
   },
+};
+
+const config = {
+  ...defaultConfig,
+  ...JSON.parse(localStorage.getItem(localStorageKey) ?? '{}'),
 };
 
 export { config };

@@ -1,5 +1,4 @@
 import { CanvasInstance } from './CanvasInstance.js';
-import { InteractivityController } from './InteractivityController.js';
 
 class Canvas {
   #element = null;

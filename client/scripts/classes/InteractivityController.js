@@ -1,16 +1,16 @@
+import { config } from '../config.js';
 import { preventDefault } from '../utils.js';
 
 const MOVING_MOUSE_BUTTONS = [1, 2];
 
 class InteractivityController {
   #element = null;
+  #cursor = null;
 
   #isMoving = false;
   #startPos = { x: 0, y: 0 };
   #pos = { x: 0, y: 0 };
   #delta = { x: 0, y: 0 };
-
-  #cursor = null;
 
   #wheelCallback = null;
   #wheelListener = (e) => {
@@ -76,7 +76,7 @@ class InteractivityController {
 
   onWheel(callback) {
     this.#wheelCallback = (e) => {
-      const STEP = 2;
+      const STEP = config.zoomScale;
       const scale = Math.sign(e.deltaY) >= 0 ? 1 / STEP : STEP;
       return callback(scale);
     };

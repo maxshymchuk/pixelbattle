@@ -1,19 +1,14 @@
 import { Canvas } from './classes/Canvas.js';
-import { config as defaultConfig } from './config.js';
+import { config } from './config.js';
 import { Palette } from './classes/Palette.js';
 import { io } from './socket.io.js';
-import { between, clearContext } from './utils.js';
+import { between, clearContext, preventDefault } from './utils.js';
 import { InteractivityController } from './classes/InteractivityController.js';
 import { localStorageKey } from './constants.js';
 
 const socket = io('http://127.0.0.1:8888', {
   withCredentials: true,
 });
-
-const config = {
-  ...defaultConfig,
-  ...JSON.parse(localStorage.getItem(localStorageKey) ?? '{}'),
-};
 
 const palette = new Palette(
   document.getElementById('palette'),
@@ -127,8 +122,8 @@ debugButton.addEventListener('click', (e) => {
 
 const debugClear = document.getElementById('debug-clear');
 debugClear.addEventListener('click', (e) => {
-  e.preventDefault();
-  e.stopPropagation();
+  preventDefault(e);
+  stopPropagation(e);
   clearContext(canvas.instance.ctx);
   canvas.update({});
 });
